@@ -1,0 +1,2 @@
+git commit -m 'adding 1st commit'
+git push -u origin main

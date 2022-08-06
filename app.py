@@ -10,7 +10,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, users_tag, login_required, usd, search, matches, zap, check_username, check_nick, tag_not_assigned, user_has_tag
+from helpers import apology, matches2, users_tag, login_required, usd, search, matches, matches2, zap, check_username, check_nick, tag_not_assigned, user_has_tag
 
 # Configure application
 app = Flask(__name__)
@@ -80,7 +80,7 @@ def index2():
                 return apology("%s" % message)
 
             ##!! Error: TypeError: takes 0 positional arguments but 2 was given
-            matches(tag, platform)
+            matches2(tag, platform)
 
             # Add a tag and platform to the table of successful_searches if it doesn't exist
             if not db_wz.execute("SELECT * FROM successful_searches WHERE tag = ? AND platform = ?", tag, platform):
@@ -142,16 +142,18 @@ def index2():
             # Check if we are logged in
             if session.get("user_id"):
                 login_status = True
+                
+                # Parallel processing to request for assigned tag and platform in users table for current user
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    print("Starting threads")
+                    future_to_tag = {executor.submit(users_tag(session["user_id"]))}
+                    # clear the thread pool
+                    executor.shutdown(wait=True)
+                    print("Threads finished")
             else:
                 login_status = False
 
-            # Parallel processing to request for assigned tag and platform in users table for current user
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                print("Starting threads")
-                future_to_tag = {executor.submit(users_tag(session["user_id"]))}
-                # clear the thread pool
-                executor.shutdown(wait=True)
-                print("Threads finished")
+
 
             # adding the tag and platform to session
             session["tag"] = tag

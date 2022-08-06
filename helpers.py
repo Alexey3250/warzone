@@ -218,8 +218,105 @@ def search(tag, platform):
     except (KeyError, TypeError, ValueError):
         return None
 
+def matches2(tag, platform):
+    """
+    Returns the matches of a player
+    """
+    print("matches")
+    try:
+        # Getting the data from the API
+        url = ('https://call-of-duty-modern-warfare.p.rapidapi.com/warzone-matches/' + tag + '/' + platform)
+        api_key = os.environ.get("API_KEY")
+        headers = {
+            "X-RapidAPI-Key": api_key,
+            "X-RapidAPI-Host": "call-of-duty-modern-warfare.p.rapidapi.com"
+        }
 
-def matches(platform, tag):
+        response = requests.request("GET", url, headers=headers)
+
+    except (KeyError, TypeError, ValueError):
+        return None
+
+    # Checking if we received some data back from the API
+    if not response.json():
+        return apology("couldn't find the data")
+    # TODO: add some more checks
+
+    # Parsing the response
+    try:
+        matches_data = response.json()
+
+        # Looping through the matches
+        # TODO: make this threaded
+        for x in range(0, 19):
+
+            # Match information
+            matchID = str(matches_data["matches"][x]["matchID"])
+            map = matches_data["matches"][x]["map"]
+            mode = matches_data["matches"][x]["mode"]
+            gameType = matches_data["matches"][x]["gameType"]
+            utcStartSeconds = matches_data["matches"][x]["utcStartSeconds"]
+            utcEndSeconds = matches_data["matches"][x]["utcEndSeconds"]
+            duration = matches_data["matches"][x]["duration"]
+            playerCount = matches_data["matches"][x]["playerCount"]
+            teamCount = matches_data["matches"][x]["teamCount"]
+
+            # Player stats
+            kills = matches_data["matches"][x]["playerStats"]["kills"]
+            medalXp = matches_data["matches"][x]["playerStats"]["medalXp"]
+            matchXp = matches_data["matches"][x]["playerStats"]["matchXp"]
+            scoreXp = matches_data["matches"][x]["playerStats"]["scoreXp"]
+            wallBangs = matches_data["matches"][x]["playerStats"]["wallBangs"]
+            score = matches_data["matches"][x]["playerStats"]["score"]
+            totalXp = matches_data["matches"][x]["playerStats"]["totalXp"]
+            headshots = matches_data["matches"][x]["playerStats"]["headshots"]
+            assists = matches_data["matches"][x]["playerStats"]["assists"]
+            challengeXp = matches_data["matches"][x]["playerStats"]["challengeXp"]
+            scorePerMinute = matches_data["matches"][x]["playerStats"]["scorePerMinute"]
+            distanceTraveled = matches_data["matches"][x]["playerStats"]["distanceTraveled"]
+            teamSurvivalTime = matches_data["matches"][x]["playerStats"]["teamSurvivalTime"]
+            deaths = matches_data["matches"][x]["playerStats"]["deaths"]
+            kdRatio = matches_data["matches"][x]["playerStats"]["kdRatio"]
+            bonusXp = matches_data["matches"][x]["playerStats"]["bonusXp"]
+            gulagDeaths = matches_data["matches"][x]["playerStats"]["gulagDeaths"]
+            timePlayed = matches_data["matches"][x]["playerStats"]["timePlayed"]
+            executions = matches_data["matches"][x]["playerStats"]["executions"]
+            gulagKills = matches_data["matches"][x]["playerStats"]["gulagKills"]
+            nearmisses = matches_data["matches"][x]["playerStats"]["nearmisses"]
+            percentTimeMoving = matches_data["matches"][x]["playerStats"]["percentTimeMoving"]
+            longestStreak = matches_data["matches"][x]["playerStats"]["longestStreak"]
+            teamPlacement = matches_data["matches"][x]["playerStats"]["teamPlacement"]
+            damageDone = matches_data["matches"][x]["playerStats"]["damageDone"]
+            damageTaken = matches_data["matches"][x]["playerStats"]["damageTaken"]
+
+            # Player information
+            team = matches_data["matches"][x]["player"]["team"]
+            rank = matches_data["matches"][x]["player"]["rank"]
+            username = matches_data["matches"][x]["player"]["username"]
+            uno = str(matches_data["matches"][x]["player"]["uno"])
+
+            # Check if the player with uno tag does not exist in a particular match
+            if not db_wz.execute("SELECT entry_id FROM matches WHERE uno = ? AND matchID = ?", uno, matchID):
+                # Inserting the data into the database
+                db_wz.execute("INSERT INTO matches(tag, platform, matchID, map, mode, gameType, utcStartSeconds, utcEndSeconds, duration, playerCount, teamCount, kills, medalXp, matchXp, scoreXp, wallBangs, score, totalXp, headshots, assists, challengeXp, scorePerMinute, distanceTraveled, teamSurvivalTime, deaths, kdRatio, bonusXp, gulagDeaths, timePlayed, executions, gulagKills, nearmisses, percentTimeMoving, longestStreak, teamPlacement, damageDone, damageTaken, team, rank, username, uno, season) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    tag, platform, matchID, map, mode, gameType, utcStartSeconds, utcEndSeconds, duration,
+                    playerCount, teamCount, kills, medalXp, matchXp, scoreXp, wallBangs, score, totalXp,
+                    headshots, assists, challengeXp, scorePerMinute, distanceTraveled, teamSurvivalTime,
+                    deaths, kdRatio, bonusXp, gulagDeaths, timePlayed, executions, gulagKills, nearmisses,
+                    percentTimeMoving, longestStreak, teamPlacement, damageDone, damageTaken, team, rank,
+                    username, uno, season
+                )
+            else:
+                break
+
+
+
+        return (matches_data)
+
+    except (KeyError, TypeError, ValueError):
+        return None
+
+def matches(tag, platform):
     """
     Returns the matches of a player
     """
