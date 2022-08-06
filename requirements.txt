@@ -10,3 +10,8 @@ export API_KEY=1721cbf831mshfaabe7d47f8b15ap1db6cdjsn49a271f66386
 CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, cash NUMERIC NOT NULL DEFAULT 10000.00);
 CREATE TABLE sqlite_sequence(name,seq);
 CREATE UNIQUE INDEX username ON users (username);
+
+export API_KEY=1721cbf831mshfaabe7d47f8b15ap1db6cdjsn49a271f66386
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+flask run
