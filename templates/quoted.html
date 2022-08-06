@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <h1>Quote</h1>
+    <br>
+    <h3>{{ name }} {{ price }} {{ symbol }} </h3>
+    <br>
+    <br>
+        <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+                <div id="tradingview_98881"></div>
+                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-{{ symbol }}/" rel="noopener" target="_blank"><span class="blue-text">{{ symbol }} Chart</span></a> by TradingView</div>
+                <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                <script type="text/javascript">
+                new TradingView.widget(
+                    {
+                    "width": 980,
+                    "height": 410,
+                    "symbol": "NASDAQ:{{ symbol }}",
+                    "interval": "D",
+                    "timezone": "Etc/UTC",
+                    "theme": "light",
+                    "style": "1",
+                    "locale": "en",
+                    "toolbar_bg": "#f1f3f6",
+                    "enable_publishing": false,
+                    "allow_symbol_change": true,
+                    "container_id": "tradingview_98881"
+                    }
+                );
+                </script>
+            </div>
+        <!-- TradingView Widget END -->
+{% endblock %}

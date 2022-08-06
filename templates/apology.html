@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <!-- https://memegen.link/ -->
+    <img alt="{{ top }}" class="border img-fluid" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://stickerly.pstatic.net/sticker_pack/tldPp6gNqYovolcIcaYEg/NV385B/2/efd6d682-da26-4cf0-b5e5-9ad8b7b20bb7.png&width=400" title="{{ top }}">
+{% endblock %}

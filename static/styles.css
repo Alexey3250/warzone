@@ -1,0 +1,105 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+
+/* Colors for navbar-brand */
+nav .navbar-brand
+{
+    color: #537fbe;
+}
+nav .navbar-default
+{
+    background-color: #151515;
+}
+
+/* Background color for layout */
+.container-fluid
+{
+    background-color: #151515;
+}
+
+/* Defauld font color */
+body
+{
+    color: #eaeae8;
+}
+
+/* Footer background color */
+footer
+{
+    background-color: #000000;
+}
+
+/* navbar-nav ms-auto mt-2 font color */
+nav .navbar-nav .nav-link
+{
+    color: #eaeae8;
+}
+
+/* nav-link active color */
+nav .navbar-nav .nav-link.active
+{
+    color: #77cd08;
+}
+/* nav-link font color */
+nav .navbar-nav .nav-link:hover
+{
+    color: #77cd08;
+}
+
+/* backgoud color */
+body
+{
+    background-color: #000000;
+}
+
+/* chart-container */
+.chart-container
+{
+    width: 100%;
+    height: auto;
+    align-items: center;
+}
+
+/* h2 font color */
+h2
+{
+    color: #eaeae8;
+}
+
+/* text align */
+.text-center
+{
+    text-align: center;
+}
+
+/* table style */
+table
+{
+    border-collapse: collapse;
+    width: 100%;
+    color: #eaeae8;
+    align-items: center;
+    align: center;
+    border: 0px solid #eaeae8;
+    cellspacing: 0px;
+    cellpadding: 0px;
+    width: 377px;
+}
+
+/* navbar-brand font color */
+nav .navbar-brand
+{
+    color: #eaeae8;
+    padding-top: 0px;
+    padding-left: 25px;
+}
+
+/* nav-item font size */
+nav .navbar-nav .nav-item
+{
+    font-size: medium;
+}

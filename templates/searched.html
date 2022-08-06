@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Searched
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <h1>Search profile</h1>
+    <br>
+        <h2><p><span> {{ nick }} {{ platform }}</span></p></h1>
+
+        <p style="text-align:center"><span style="font-size:24px"><strong><span>K/D:</span><span style="background-color:#e74c3c">&nbsp; </span></strong><span style="color:#ffffff"><strong><span style="background-color:#e74c3c">{{ kd }}&nbsp;</span></strong></span><strong><span style="background-color:#e74c3c">&nbsp;</span></strong></span></p>
+
+        <table align="center" border="0">
+            <tbody>
+                <tr>
+                    <td style="text-align:right; width:157px"><span style="font-size:16px">WINS&nbsp;<strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; {{ wins }}&nbsp;&nbsp;</span></span></strong></span></td>
+                    <td style="text-align:right; width:210px"><span style="font-size:16px">KILLS <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; {{ kills }}&nbsp;&nbsp;</span></span></strong></span></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right; width:157px"><span style="font-size:16px">WIN&nbsp;<strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; --%&nbsp;&nbsp;</span></span></strong></span></td>
+                    <td style="text-align:right; width:210px"><span style="font-size:16px">KILLS/GAME <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; --&nbsp;</span></span></strong></span></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right; width:157px"><span style="font-size:16px">GULAG WIN <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; --%&nbsp;&nbsp;</span></span></strong></span></td>
+                    <td style="text-align:right; width:210px"><span style="font-size:16px">TIME PLAYED <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; {{ timePlayed }} h.&nbsp;&nbsp;</span></span></strong></span></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                Col 1
+                <canvas id="killsChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col-sm-6">
+                Col 2
+                <canvas id="winsChart" width="400" height="400"></canvas>
+            </div>
+
+        </div>
+
+        <script>
+            const ctx = document.getElementById('killsChart').getContext('2d');
+            const killsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ timestamp_timeline | safe }},
+                    datasets: [{
+                        label: 'KD',
+                        data: {{ kd_timeline | safe }},
+                        backgroundColor: '#c4c4c4',
+                        borderColor: '#c4c4c4',
+                        tension: 0.4,
+                        type: 'line',
+                        pointRadius: 0,
+                        hoverBackgroundColor: '#eaeaea',
+                        hoverBorderWidth: 2,
+                    },{
+                        label: '# of deaths',
+                        data: {{ deaths_timeline | safe }},
+                        backgroundColor: '#e90011',
+                        borderWidth: 1,
+                        categoryPercentage: 1.5,
+                    },{
+                        label: '# of kills',
+                        data: {{ kills_timeline | safe }},
+                        backgroundColor: '#73cf02',
+                        borderWidth: 1,
+                        categoryPercentage: 1.5
+                    }
+                ]
+                },
+
+
+                options: {
+                    datalables: { display: true },
+                    responsive: false,
+                    scales: {
+                        x: { stacked: true,
+                            grid: {
+                                display: true,
+                                color: '#464646',
+                                borderDash: [3, 3],
+                                borderDashOffset: 0,
+                                borderJoinStyle: 'miter',
+                                borderWidth: 1,
+                                drawBorder: true,
+                                drawTicks: true,
+                                drawOnChartArea: true,
+                                drawBorder: true,
+                                gridLines: {
+                                    color: '#464646',
+                                    borderDash: [3, 3],
+                                    borderDashOffset: 0,
+                                    borderJoinStyle: 'miter',
+                                    borderWidth: 1,
+                                    drawBorder: true,
+                                    drawTicks: true,
+                                    drawOnChartArea: true,
+                                    drawBorder: true,
+                                },
+                            },
+                         },
+                        y: { stacked: true,
+                            beginAtZero: true,
+                            grid: {
+                                display: true,
+                                color: '#464646',
+                                borderDash: [3, 3],
+                                borderDashOffset: 0,
+                                borderJoinStyle: 'miter',
+                                borderWidth: 1,
+                                drawBorder: true,
+                                drawTicks: true,
+                                drawOnChartArea: true,
+                                drawBorder: true,
+                                gridLines: {
+                                    color: '#464646',
+                                    borderDash: [3, 3],
+                                    borderDashOffset: 0,
+                                    borderJoinStyle: 'miter',
+                                    borderWidth: 1,
+                                    drawBorder: true,
+                                    drawTicks: true,
+                                    drawOnChartArea: true,
+                                    drawBorder: true,
+                                },
+                            },
+                        }
+                    }
+                }
+            });
+        </script>
+        <br>
+        {% if login_status == True %}
+            {% if can_add == True %}
+            <!--Buttton to add a friend to squad-->
+                <a href="">
+                    <button class="btn btn-primary">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                        Add to Squad
+                    </button>
+                </a>
+                {% if can_add == True %}
+                <!--Botton to set as your profile-->
+                    <form method="post" action="/searched">
+                        <button class="btn btn-primary" name="set_profile" value="set_profile">
+                            Set as my profile
+                        </button>
+                    </form>
+                {% endif %}
+            {% endif %}
+            {% else %}
+                <a href="/register">
+                    <button class="btn btn-primary">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                        Register to set as your profile
+                    </button>
+                </a>
+        {% endif %}
+        <p>&nbsp;</p>
+</div>
+
+{% endblock %}

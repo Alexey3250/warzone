@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+    <h1>Search profile</h1>
+    <br>
+    <form action="/" method="post">
+
+> **MAD#9849741**
+> **Activision**
+flighty#7140557 battlenet
+
+
+        <div>
+            <input type="radio" id="Choice1"
+             name="platform" value="acti">
+            <label for="contactChoice1">Activision ID</label>
+
+            <input type="radio" id="Choice2"
+            name="platform" value="uno">
+           <label for="contactChoice2">Activision Tag</label>
+
+            <input type="radio" id="Choice3"
+             name="platform" value="psn">
+            <label for="contactChoice2">PlayStation</label>
+
+            <input type="radio" id="Choice4"
+             name="platform" value="battle">
+            <label for="contactChoice3">Battle.net</label>
+
+            <input type="radio" id="Choice5"
+            name="platform" value="xbl">
+           <label for="contactChoice3">Xbox Live</label>
+          </div>
+          <br>
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="nick" placeholder="Username#12345" type="text">
+        </div>
+
+        <div>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+        {% if login_status == True %}
+            <div>
+                <button class="btn btn-primary" type="submit">Compare to your profile</button>
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}
