@@ -1,2 +1,8 @@
 git commit -m 'adding 1st commit'
 git push -u origin main
+git add .
+
+export API_KEY=1721cbf831mshfaabe7d47f8b15ap1db6cdjsn49a271f66386
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+flask run

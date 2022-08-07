@@ -178,7 +178,55 @@ def index2():
                 can_add=can_add
                 )
 
+@app.route("/compared", methods=["GET", "POST"])
+def compared():
+    """For charts"""
+    if request.method == "GET":
+        return render_template("compared.html")
+    else:
+        return render_template("compared.html")
 
+@app.route("/compare", methods=["GET", "POST"])
+def compare():
+    """Compare two profiles."""
+    if request.method == "GET":
+        return render_template("compare.html")
+    else:
+        nick1 = request.form.get("nick1")
+        nick2 = request.form.get("nick2")
+        if nick1 != None and nick2 != None:
+            tag1 = nick1.replace("#","%2523")
+            tag2 = nick2.replace("#","%2523")
+
+        # Assign a platform from session
+        platform1 = session.get("platform")
+        platform2 = request.form.get("platform2")
+        print(f"Imput received: {tag1}, type: {type(tag1)}; {platform1}, type: {type(platform1)}")
+        print(f"Imput received: {tag2}, type: {type(tag2)}; {platform2}, type: {type(platform2)}")
+
+        # Check if nick is correct
+        check_nick(nick1)
+        check_nick(nick2)
+        # Check if the platform is correct
+        if not platform1 or not platform2:
+            return apology("Input the platform")
+
+        else:
+            # search and save to a database
+            message = search(tag1, platform1)
+            message2 = search(tag2, platform2)
+            # Check if we received an error
+            if message != "ok" or message2 != "ok":
+                return apology("%s" % message)
+
+            matches2(tag1, platform1)
+            matches2(tag2, platform2)
+            # Add a tag and platform to the table of successful_searches if it doesn't exist
+            if not db_wz.execute("SELECT * FROM successful_searches WHERE tag = ? AND platform = ?", tag1, platform1):
+                db_wz.execute("INSERT INTO successful_searches (tag, platform) VALUES (?, ?)", tag1, platform1)
+            if not db_wz.execute("SELECT * FROM successful_searches WHERE tag = ? AND platform = ?", tag2, platform2):
+                db_wz.execute("INSERT INTO successful_searches (tag, platform) VALUES (?, ?)", tag2, platform2)
+            
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
@@ -228,7 +276,6 @@ def matches():
         print("/matches: POST")
         return render_template("matches.html")
 
-
 @app.route("/searched", methods=["GET", "POST"])
 def searched():
     """Manipulations with the searched profile"""
@@ -263,7 +310,6 @@ def searched():
 
     else:
         return render_template("searched.html")
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -300,7 +346,6 @@ def login():
     else:
         return render_template("login.html")
 
-
 @app.route("/logout")
 def logout():
     """Log user out"""
@@ -310,7 +355,6 @@ def logout():
 
     # Redirect user to login form
     return redirect("/")
-
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
