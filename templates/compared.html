@@ -6,6 +6,37 @@
 
 {% block main %}
 
+<div class="col-sm-6">
+    <canvas id="radar" width="400" height="400"></canvas>
+</div>
 
+<script>
+    const ctx = document.getElementById('radar').getContext('2d');
+    const radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['Play time', 'K/D', 'Score/minute', 'Kills/game', 'Win %', 'Gulag win %'],
+            datasets: [{
+                label: 'Player 1',
+                data: [1900, 5, 1300, 11, 22, 76],
+                backgroundColor: 'rgba(123, 196, 45, 0.2)',
+                borderColor: '#7bc42d',
+                hoverBorderWidth: 2
+            }, {
+                label: 'Player 2',
+                data: [690, 4, 1200, 12, 15, 69],
+                backgroundColor: 'rgba(240, 183, 29, 0.2)',
+                borderColor: '#f0b71d',
+                hoverBorderWidth: 2
+            }]
+        },
+        options: {
+            scale: {
+                // Hides the scale
+                display: false
+            }
+        }
+    });
+</script>
 
 {% endblock %}
