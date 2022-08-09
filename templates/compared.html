@@ -7,36 +7,88 @@
 {% block main %}
 
 <div class="col-sm-6">
+    <!-- Stupid chart.js does not provide with the option for mutiple axis 
+    so in this case we just have to pass it the values prepared in python (from 0 to 100 to each value)-->
     <canvas id="radar" width="400" height="400"></canvas>
 </div>
+<div class="col-sm-6">
+    <canvas id="radar-chart" width="400" height="400"></canvas>
+
+
+    data: {{ player1_br_radar }},
 
 <script>
     const ctx = document.getElementById('radar').getContext('2d');
     const radarChart = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['Play time', 'K/D', 'Score/minute', 'Kills/game', 'Win %', 'Gulag win %'],
+            labels: ['Play time', 'K/D', 'Wins', 'Kills/game', 'Win %', 'Gulag win %'],
             datasets: [{
-                label: 'Player 1',
-                data: [1900, 5, 1300, 11, 22, 76],
+                label: {{ nick1 }},
+                data: {{ player1_br_radar }},
                 backgroundColor: 'rgba(123, 196, 45, 0.2)',
                 borderColor: '#7bc42d',
                 hoverBorderWidth: 2
             }, {
-                label: 'Player 2',
-                data: [690, 4, 1200, 12, 15, 69],
+                label: {{ nick2 }},
+                data: [80, 30, 20, 42, 45, 69],
                 backgroundColor: 'rgba(240, 183, 29, 0.2)',
                 borderColor: '#f0b71d',
-                hoverBorderWidth: 2
+                hoverBorderWidth: 2,
+                hoverBorderColor: '#f0b71d'
+
             }]
         },
         options: {
-            scale: {
-                // Hides the scale
+            legend: {
                 display: false
+            },
+            scale: {
+                ticks: {
+                    beginAtZero: true
+                }
             }
         }
     });
+</script>
+<script>
+    new Chart(document.getElementById("radar-chart"), {
+    type: 'radar',
+    data: {
+      labels: ["Wins", "K/D", "Time played", "Score per minute", "Kills", "Deaths"],
+      datasets: [
+        {
+          label: "{{ nick1 }}",
+          fill: true,
+          backgroundColor: "rgba(179,181,198,0.2)",
+          borderColor: "rgba(179,181,198,1)",
+          pointBorderColor: "#fff",
+          pointBackgroundColor: "rgba(179,181,198,1)",
+          data: {{ player1_br_radar }}
+        }, {
+          label: "{{ nick2 }}",
+          fill: true,
+          backgroundColor: "rgba(255,99,132,0.2)",
+          borderColor: "rgba(255,99,132,1)",
+          pointBorderColor: "#fff",
+          pointBackgroundColor: "rgba(255,99,132,1)",
+          pointBorderColor: "#fff",
+          data: {{ player2_br_radar }}
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Distribution in % of world population'
+      },
+        scale: {
+            ticks: {
+            beginAtZero: true
+            }
+        }
+    }
+});
 </script>
 
 {% endblock %}

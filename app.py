@@ -10,7 +10,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, matches2, users_tag, login_required, usd, search, matches, matches2, zap, check_username, check_nick, tag_not_assigned, user_has_tag
+from helpers import apology, matches2, users_tag, login_required, usd, search, matches, matches2, zap, check_username, check_nick, tag_not_assigned, user_has_tag, radar_compare
 
 # Configure application
 app = Flask(__name__)
@@ -192,17 +192,18 @@ def compare():
     if request.method == "GET":
         return render_template("compare.html")
     else:
+        # Recieve the nicknames from the form
         nick1 = request.form.get("nick1")
         nick2 = request.form.get("nick2")
         if nick1 != None and nick2 != None:
             tag1 = nick1.replace("#","%2523")
             tag2 = nick2.replace("#","%2523")
 
-        # Assign a platform from session
-        platform1 = session.get("platform")
+        # Assign a platform from session and from the form
+        platform1 = session.get("platform1")
+        platform1 = request.form.get("platform1")
         platform2 = request.form.get("platform2")
-        print(f"Imput received: {tag1}, type: {type(tag1)}; {platform1}, type: {type(platform1)}")
-        print(f"Imput received: {tag2}, type: {type(tag2)}; {platform2}, type: {type(platform2)}")
+        print(f"Tag1: {tag1}; Platform1: {platform1};   Tag2: {tag2}; Platform2: {platform2}")
 
         # Check if nick is correct
         check_nick(nick1)
@@ -219,14 +220,89 @@ def compare():
             if message != "ok" or message2 != "ok":
                 return apology("%s" % message)
 
-            matches2(tag1, platform1)
-            matches2(tag2, platform2)
+            # Open a second thread to use matches2 function. Just to update the database for the users on the background
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                print("Starting threads")
+                future_to_tag = {executor.submit(matches2(tag1, platform1), matches2(tag2, platform2))}
+                # clear the thread pool
+                executor.shutdown(wait=True)
+                print("Threads finished")
+            
             # Add a tag and platform to the table of successful_searches if it doesn't exist
             if not db_wz.execute("SELECT * FROM successful_searches WHERE tag = ? AND platform = ?", tag1, platform1):
                 db_wz.execute("INSERT INTO successful_searches (tag, platform) VALUES (?, ?)", tag1, platform1)
             if not db_wz.execute("SELECT * FROM successful_searches WHERE tag = ? AND platform = ?", tag2, platform2):
                 db_wz.execute("INSERT INTO successful_searches (tag, platform) VALUES (?, ?)", tag2, platform2)
+            # Query for the matches data
+            player1_data = db_wz.execute("SELECT * FROM matches WHERE tag = ? AND platform = ?", tag1, platform1)
+            player2_data = db_wz.execute("SELECT * FROM matches WHERE tag = ? AND platform = ?", tag2, platform2)
             
+            # Query for the last data entry in br table for each player and saving to list class variables
+            player1_br = db_wz.execute("SELECT * FROM br WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
+            player2_br = db_wz.execute("SELECT * FROM br WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
+            player1_br_all = db_wz.execute("SELECT * FROM br_all WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
+            player2_br_all = db_wz.execute("SELECT * FROM br_all WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
+            player1_br_dmz = db_wz.execute("SELECT * FROM br_dmz WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
+            player2_br_dmz = db_wz.execute("SELECT * FROM br_dmz WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
+            print(f"player1_br: {player1_br}, {type(player1_br)}")
+            print(f"player2_br: {player2_br}, {type(player2_br)}")
+            
+            # Converting lists to individual variables
+            player1_br_wins = player1_br[0]["wins"]
+            player1_br_kills = player1_br[0]["kills"]
+            player1_br_kdRatio = player1_br[0]["kdRatio"]
+            player1_br_deaths = player1_br[0]["deaths"]
+            player1_br_downs = player1_br[0]["downs"]
+            player1_br_topTwentyFive = player1_br[0]["topTwentyFive"]
+            player1_br_topTen = player1_br[0]["topTen"]
+            player1_br_topFive = player1_br[0]["topFive"]
+            player1_br_contracts = player1_br[0]["contracts"]
+            player1_br_revives = player1_br[0]["revives"]
+            player1_br_score = player1_br[0]["score"]
+            player1_br_scorePerMinute = player1_br[0]["scorePerMinute"]
+            player1_br_timePlayed = player1_br[0]["timePlayed"]
+            
+            player2_br_wins = player2_br[0]["wins"]
+            player2_br_kills = player2_br[0]["kills"]
+            player2_br_kdRatio = player2_br[0]["kdRatio"]
+            player2_br_deaths = player2_br[0]["deaths"]
+            player2_br_downs = player2_br[0]["downs"]
+            player2_br_topTwentyFive = player2_br[0]["topTwentyFive"]
+            player2_br_topTen = player2_br[0]["topTen"]
+            player2_br_topFive = player2_br[0]["topFive"]
+            player2_br_contracts = player2_br[0]["contracts"]
+            player2_br_revives = player2_br[0]["revives"]
+            player2_br_score = player2_br[0]["score"]
+            player2_br_scorePerMinute = player2_br[0]["scorePerMinute"]
+            player2_br_timePlayed = player2_br[0]["timePlayed"]
+            
+            ## Creating numbers for the radar chart - BR only
+                
+            # Calling the radar_compare function to compare the 2 players
+
+            br_Rwins = radar_compare(player1_br[0]["wins"], player2_br[0]["wins"])
+            br_RkdRatio = radar_compare(player1_br[0]["kdRatio"], player2_br[0]["kdRatio"])
+            br_RtimePlayed = radar_compare(player1_br[0]["timePlayed"], player2_br[0]["timePlayed"])
+            br_RscorePerMinute = radar_compare(player1_br[0]["scorePerMinute"], player2_br[0]["scorePerMinute"])
+            br_Rkills = radar_compare(player1_br[0]["kills"], player2_br[0]["kills"])
+            br_Rdeaths = radar_compare(player1_br[0]["deaths"], player2_br[0]["deaths"])
+            
+            # make a list for each player radar chart data
+            player1_br_radar = (br_Rwins[0], br_RkdRatio[0], br_RtimePlayed[0], br_RscorePerMinute[0], br_Rkills[0], br_Rdeaths[0])
+            player2_br_radar = (br_Rwins[1], br_RkdRatio[1], br_RtimePlayed[1], br_RscorePerMinute[1], br_Rkills[1], br_Rdeaths[1])
+            player1_br_radar = list(player1_br_radar)
+            player2_br_radar = list(player2_br_radar)
+
+            
+            
+            print(player1_br_radar)
+
+                
+            
+                
+            
+            
+            return render_template("compared.html", player1_data=player1_data, player2_data=player2_data, nick1=nick1, nick2=nick2, player1_br_radar=player1_br_radar, player2_br_radar=player2_br_radar)
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():

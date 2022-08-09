@@ -475,3 +475,15 @@ def users_tag(username):
     else:
         return None
 
+def radar_compare(player1, player2):
+    """ Compares 2 numbers and assignes 100 to a highest number and a fraction of that number to the other. """
+    print("started radar_compare functuion")
+    
+    if player1 > player2:
+        return 100, player2 / player1 * 100
+    elif player1 == player2:
+        return 100, 100
+    else:
+        return player1 / player2 * 100, 100
+    
+    # this function returns tuple
