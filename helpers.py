@@ -212,6 +212,7 @@ def search(tag, platform):
                     )
                 message = "ok"
                 print(message)
+                db_wz.execute("INSERT INTO successful_searches (tag, platform) VALUES (?, ?)", tag, platform)
                 return (message)
 
 

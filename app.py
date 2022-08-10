@@ -213,13 +213,13 @@ def compare():
             return apology("Input the platform")
 
         else:
-            # search and save to a database
-            message = search(tag1, platform1)
-            message2 = search(tag2, platform2)
-            # Check if we received an error
-            if message != "ok" or message2 != "ok":
-                return apology("%s" % message)
+            # Add a tag and platform to the table of successful_searches if it doesn't exist
+            if not db_wz.execute("SELECT * FROM successful_searches WHERE tag= ? AND platform= ?", tag1, platform1):
+                message = search(tag1, platform1)
 
+            if not db_wz.execute("SELECT * FROM successful_searches WHERE tag= ? AND platform= ?", tag2, platform2):
+                message2 = search(tag2, platform2)
+            
             # Open a second thread to use matches2 function. Just to update the database for the users on the background
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 print("Starting threads")
