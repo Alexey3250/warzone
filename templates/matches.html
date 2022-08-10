@@ -13,4 +13,33 @@ here we add some graphs for past history of matches
 and here we render all matches history
 
 
+
+<table class="table table-dark table-striped">
+    <tbody>
+        <tr>
+            <th scope="row">#</th>
+            <th scope="row">Placement</th>
+            <th scope="row">Mode</th>
+            <th scope="row">Dealt damage</th>
+            <th scope="row">Taken damage</th>
+            <th scope="row">Kills</th>
+            <th scope="row">Deaths</th>
+            <th scope="row">K/D</th>
+            <th scope="row">Time played</th>
+        </tr>
+        {% for match in matches %}
+        <tr>
+            <th scope="row">{{ match.id }}</th>
+            <td>{{ match.teamPlacement }}</td>
+            <td>{{ match.mode }}</td>
+            <td>{{ match.damageDone }}</td>
+            <td>{{ match.damageTaken }}</td>
+            <td>{{ match.kills }}</td>
+            <td>{{ match.deaths }}</td>
+            <td>{{'%0.1f'| format(match.kdRatio|float) }}</td>
+            <td>{{'%0f'| format(match.timePlayed / 60 | float) }}min</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

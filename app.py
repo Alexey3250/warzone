@@ -347,7 +347,17 @@ def matches():
     """ Matches stats """
     if request.method == "GET":
         print("/matches: GET")
-        return render_template("matches.html")
+        
+        # Get user and platform from session
+        user = session["user_id"]
+        platform = "acti"
+        tag = "MAD%25239849741"
+        
+        # Get data from matches table for this tag and platform, ordered by newest
+        matches = db_wz.execute("SELECT * FROM matches WHERE platform = :platform AND tag = :tag ORDER BY entry_id DESC", platform=platform, tag=tag)
+        
+        
+        return render_template("matches.html", matches=matches)
     else:
         print("/matches: POST")
         return render_template("matches.html")
