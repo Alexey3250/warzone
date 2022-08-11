@@ -89,7 +89,7 @@ def index2():
             # Setting the values
             warzone_values = 0
             # Select values from the database
-            warzone_values = db_wz.execute("SELECT wins, kills, timePlayed, kdRatio FROM br_all WHERE tag= ? ORDER BY entry_id DESC LIMIT 1", tag)
+            warzone_values = db_wz.execute("SELECT * FROM br_all WHERE tag= ? ORDER BY entry_id DESC LIMIT 1", tag)
 
             # TODO: add a debug if we cant find an entry
             if not warzone_values:
@@ -99,6 +99,12 @@ def index2():
             kills = warzone_values[0]["kills"]
             timePlayed = round(warzone_values[0]["timePlayed"] / 3600)
             kd = round(warzone_values[0]["kdRatio"], 2)
+            top25 = warzone_values[0]["topTwentyFive"]
+            top10 = warzone_values[0]["topTen"]
+            top5 = warzone_values[0]["topFive"]
+            top1 = warzone_values[0]["wins"]
+            # Create a list of top25, top10, top5, top1
+            top = [top25, top10, top5, top1]
 
             ## Creating a kills/deaths chart
 
@@ -175,8 +181,7 @@ def index2():
                 kills_timeline=kills_timeline, deaths_timeline=deaths_timeline,
                 timestamp_timeline=timestamp_timeline, teamPlacement_timeline=teamPlacement_timeline,
                 kd_timeline=kd_timeline, tag_check=tag_check, login_status=login_status,
-                can_add=can_add
-                )
+                can_add=can_add, top25=top25, top10=top10, top5=top5, top1=top1, top=top)
 
 @app.route("/compared", methods=["GET", "POST"])
 def compared():

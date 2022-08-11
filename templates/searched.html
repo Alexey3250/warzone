@@ -32,16 +32,18 @@
 
         <div class="row">
             <div class="col-sm-6">
-                Col 1
+                K/D chart
                 <canvas id="killsChart" width="400" height="400"></canvas>
             </div>
             <div class="col-sm-6">
-                Col 2
+                Wins distribution
                 <canvas id="winsChart" width="400" height="400"></canvas>
+                {{ top }}
             </div>
 
         </div>
-
+        
+        <!-- KIlls chart script-->
         <script>
             const ctx = document.getElementById('killsChart').getContext('2d');
             const killsChart = new Chart(ctx, {
@@ -80,6 +82,10 @@
                     responsive: false,
                     scales: {
                         x: { stacked: true,
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 10
+                            },
                             grid: {
                                 display: true,
                                 color: '#464646',
@@ -134,6 +140,31 @@
                 }
             });
         </script>
+
+        <!-- Wins distribution chart -->
+        <script>
+            new Chart(document.getElementById("winsChart"), {
+                type: 'Bar',
+                data: {
+                labels: ["top25", "top10", "top5", "wins"],
+                datasets: [
+                    {
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                    data: {{ top }}
+                    }
+                ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                    display: true,
+                    text: 'Wins distribution'
+                    }
+
+                }
+            });
+        </script>
+
         <br>
         {% if login_status == True %}
             {% if can_add == True %}
@@ -163,5 +194,15 @@
         {% endif %}
         <p>&nbsp;</p>
 </div>
+<div clss="container-sm">
+    <h2>Current </h2>
+</div>
+<div clss="container-sm">
+    <h2>BR stats</h2>
+</div>
+<div clss="container-sm">
+    <h2>Rebirth stats</h2>
+</div>
+
 
 {% endblock %}
