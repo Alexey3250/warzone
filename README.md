@@ -33,10 +33,14 @@ Actions related to queries in the database that will not be used in the renderin
 
 ## Lessons Learned
 
+### Strange python error
+
 There was a wierd error calling "matches(tag, profile)" function. For some reason it stopped working and was giving me and error: "You are trying to pass 2 positional arguments while the function takes 0".
 It took me 2 days to figure this out. It was solved by copyiing "matches()" function in helpers.py to "matches2()" and without any other changes it started to work. I'm still wondering till this day what was the issue there.
 [What did we learn?](https://www.youtube.com/watch?v=J6VjPM5CeWs&ab_channel=UltraMiraculous)
 
+### Chart.js documentation is a mess
+Chart.js library looks very simple at first. It's qiute simple to draw very basic charts. However, when you try to customize the charts it becomes a headache. For some reason sometimes you change 1 thing and chart dissapears. It takes time just to render chart on the page again. When you look at the docmentation everything is scattered around the place. It probably needs a whole course and learning it takes time.
 
 ## Roadmap
 
