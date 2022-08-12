@@ -7,7 +7,7 @@ Warzone data website that shows your gaming prfrormance in Call of Duty Warzone.
 
 Developed in Python using Flask framework. + SQL, HTML, CSS, JavaScript
 
-API used for data: 
+API used for data: https://rapidapi.com/elreco/api/call-of-duty-modern-warfare
 
 
 
@@ -28,7 +28,7 @@ Actions related to queries in the database that will not be used in the renderin
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Error meme generator](http://memegen.link/custom/400/404----Not-found.-Incorrect-username-or-platform~q-Misconfigured-privacy-settings~q.jpg?alt=https://stickerly.pstatic.net/sticker_pack/tldPp6gNqYovolcIcaYEg/NV385B/2/efd6d682-da26-4cf0-b5e5-9ad8b7b20bb7.png&width=400)
 
 
 ## Lessons Learned
@@ -40,7 +40,7 @@ It took me 2 days to figure this out. It was solved by copyiing "matches()" func
 [What did we learn?](https://www.youtube.com/watch?v=J6VjPM5CeWs&ab_channel=UltraMiraculous)
 
 ### Chart.js documentation is a mess
-Chart.js library looks very simple at first. It's qiute simple to draw very basic charts. However, when you try to customize the charts it becomes a headache. For some reason sometimes you change 1 thing and chart dissapears. It takes time just to render chart on the page again. When you look at the docmentation everything is scattered around the place. Sometimes even copypasted code from the documentation does not work. It probably needs a whole course and learning it takes time.
+Chart.js library looks very simple at first. It's qiute simple to draw very basic charts. However, when you try to customize the charts it becomes a headache. For some reason sometimes you change 1 thing and chart dissapears. It takes time just to render chart on the page again. When you look at the docmentation everything is scattered around the place. Sometimes even copypasted code from the documentation does not work. It probably needs a whole course. It takes time.
 
 ## Roadmap
 

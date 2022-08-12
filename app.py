@@ -97,6 +97,7 @@ def index2():
 
             wins = warzone_values[0]["wins"]
             kills = warzone_values[0]["kills"]
+            deaths = warzone_values[0]["deaths"]
             timePlayed = round(warzone_values[0]["timePlayed"] / 3600)
             kd = round(warzone_values[0]["kdRatio"], 2)
             top25 = warzone_values[0]["topTwentyFive"]
@@ -178,7 +179,7 @@ def index2():
 
             return render_template("searched.html", nick=nick, platform=platform,
                 kills=zap(kills), wins=zap(wins), timePlayed=zap(timePlayed), kd=kd,
-                kills_timeline=kills_timeline, deaths_timeline=deaths_timeline,
+                kills_timeline=kills_timeline, deaths=zap(deaths), deaths_timeline=deaths_timeline,
                 timestamp_timeline=timestamp_timeline, teamPlacement_timeline=teamPlacement_timeline,
                 kd_timeline=kd_timeline, tag_check=tag_check, login_status=login_status,
                 can_add=can_add, top25=top25, top10=top10, top5=top5, top1=top1, top=top)

@@ -5,6 +5,63 @@
 {% endblock %}
 
 {% block main %}
+<!-- Page header -->
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1>{{ nick }}</h1>
+        {{ platform }}
+    </div>
+<!-- Page content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Main graphs -->
+            <div class="card mb-4 bg-dark">
+                <div class="card-body">
+                    <h2>Performance in last matches</h2>
+                    <div class="mainChart">
+                        <canvas id="killsChart" width=800px height=350px></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <!-- Sidebar -->
+            <div class="card mb-4 bg-dark">
+                <div class="card-header">
+                    <h2>Statistics</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <h4>K/D</h4>
+                        <h6>{{ kd }}</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>Kills</h5>
+                            <p>{{ kills }}</p>
+                            <br>
+                            <h5>Wins</h5>
+                            <p>{{ wins }}</p>
+                        </div>
+                        <div class="col-6">
+                            <h5>Deaths</h5>
+                            <p>{{ deaths }}</p>
+                            <br>
+                            <h5>Time played</h5>
+                            <p>{{ timePlayed }} h</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div clas="col-lg-8"></div>
+
+
+
 <div class="container">
     <h1>Search profile</h1>
     <br>
@@ -37,16 +94,20 @@
             </div>
             <div class="col-sm-6">
                 Wins distribution
+                <div class="chartBox">
+                    <canvas id="winsChart"></canvas>
+                </div>
                 <canvas id="winsChart" width="400" height="400"></canvas>
                 {{ top }}
+                {{ top1 }}
             </div>
 
         </div>
         
         <!-- KIlls chart script-->
         <script>
-            const ctx = document.getElementById('killsChart').getContext('2d');
-            const killsChart = new Chart(ctx, {
+            var ctx = document.getElementById('killsChart').getContext('2d');
+            var killsChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: {{ timestamp_timeline | safe }},
@@ -59,7 +120,7 @@
                         type: 'line',
                         pointRadius: 0,
                         hoverBackgroundColor: '#eaeaea',
-                        hoverBorderWidth: 2,
+                        hoverBorderWidth: 3,
                     },{
                         label: '# of deaths',
                         data: {{ deaths_timeline | safe }},
@@ -76,13 +137,13 @@
                 ]
                 },
 
-
                 options: {
                     datalables: { display: true },
                     responsive: false,
                     scales: {
                         x: { stacked: true,
                             ticks: {
+                                display: false,
                                 autoSkip: true,
                                 maxTicksLimit: 10
                             },
@@ -143,37 +204,54 @@
 
         <!-- Wins distribution chart -->
         <script>
-            const ctx = document.getElementById('winsChart').getContext('2d');
-            const myChart = new Chart(ctx, {
+            var ctx = document.getElementById('winsChart').getContext('2d');
+            var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: ['Wins'],
                     datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
+                        label: '# of Wins',
+                        data: [{{ top1 }}],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
+                            'rgba(255, 99, 132, 0.2)'
+                        ]
+                    },
+                    {
+                        label: '# of Top 5',
+                        data: [{{ top5 }}],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)'
+                        ]
+                    },
+                    {
+                        label: '# of Top 10',
+                        data: [{{ top10 }}],
+                        backgroundColor: [
+                            'rgba(255, 206, 86, 0.2)'
+                        ]
+                    },
+                    {
+                        label: '# of Top 25',
+                        data: [{{ top25 }}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)'
+                        ]
+                    }
+                ]},
                 options: {
+                    maintainAspectRatio: true,
+                    responsive: true,
+                    interaction: {
+                        intersect: false,
+                    },
                     scales: {
+                        x: {
+                            display: false,
+                            stacked: true,
+                        },
                         y: {
-                            beginAtZero: true
+                            display: false,
+                            stacked: true,
                         }
                     }
                 }

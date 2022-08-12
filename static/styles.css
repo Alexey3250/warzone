@@ -4,6 +4,21 @@ nav .navbar-brand
     font-size: xx-large;
 }
 
+/* Size for chartBox */
+.chartBox
+{
+    width: 400px;
+    height: 400px;
+    font-size: large;
+}   
+
+/* Size for mainChart */
+.mainChart
+{
+    width: 850px;
+    height: 350px;
+}
+
 
 /* Colors for navbar-brand */
 nav .navbar-brand
