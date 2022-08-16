@@ -19,6 +19,15 @@ nav .navbar-brand
     height: 350px;
 }
 
+/* Size for sideChart */
+.sideChart
+{
+    width: 350px;
+    height: 350px;
+    /* make content centered */
+    margin-left: 20px;
+
+}
 
 /* Colors for navbar-brand */
 nav .navbar-brand
@@ -76,6 +85,14 @@ body
 {
     width: 100%;
     height: auto;
+    align-items: center;
+}
+
+/* radar-chart */
+.radar
+{
+    width: 350px;
+    height: 350px;
     align-items: center;
 }
 

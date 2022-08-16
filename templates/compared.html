@@ -6,9 +6,159 @@
 
 {% block main %}
 
+<!-- Page header -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+      <h1>{{ nick1 }} vs {{ nick2 }}</h1>
+  </div>
+
+<!-- Page content -->
+<div class="container">
+  <!-- Main container -->
+  <div class="row justify-content-md-center">
+      <!-- Left container -->
+      <div class="col-sm">
+         
+        <div class="row">
+          <div class="card bg-dark">
+            <div class="card-body">
+                <h2>Performance in last matches</h2>
+                <div clsss="radar">
+                  <canvas id="radar-chart"></canvas>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right container -->
+      <div class="col-sm">
+        <div class="card bg-dark">
+          <div class="card-body">
+            <div class="row">
+              <!-- header of the side card -->
+              <h2>Direct comparison</h2>
+            </div>
+            <div class="row">
+              <!-- nicknames -->
+              <div class="col">
+                <!-- Column 1 -->
+                <h4>{{ nick1 }}</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>{{ nick2 }}</h4>
+              </div>
+            <div class="row">
+              <!-- comparison -->
+              <h4>Time played</h4>
+              <div class="col">
+                <!-- column 1 -->
+                <h4>Time 1</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>Time 2</h4>
+              </div>
+            </div>
+            <div class="row">
+              <!-- comparison -->
+              <h4>Time played</h4>
+              <div class="col">
+                <!-- column 1 -->
+                <h4>Time 1</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>Time 2</h4>
+              </div>
+            </div>
+            <div class="row">
+              <!-- comparison -->
+              <h4>Time played</h4>
+              <div class="col">
+                <!-- column 1 -->
+                <h4>Time 1</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>Time 2</h4>
+              </div>
+            </div>
+            <div class="row">
+              <!-- comparison -->
+              <h4>Time played</h4>
+              <div class="col">
+                <!-- column 1 -->
+                <h4>Time 1</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>Time 2</h4>
+              </div>
+            </div>
+            <div class="row">
+              <!-- comparison -->
+              <h4>Time played</h4>
+              <div class="col">
+                <!-- column 1 -->
+                <h4>Time 1</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>Time 2</h4>
+              </div>
+            </div>
+            <div class="row">
+              <!-- comparison -->
+              <h4>Time played</h4>
+              <div class="col">
+                <!-- column 1 -->
+                <h4>Time 1</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>Time 2</h4>
+              </div>
+            </div>
+            <div class="row">
+              <!-- comparison -->
+              <h4>Time played</h4>
+              <div class="col">
+                <!-- column 1 -->
+                <h4>Time 1</h4>
+              </div>             
+              <div class="col">
+                <!-- column 2-->
+                <h4>Time 2</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-dark">
+    <div class="card-body">
+      <h2>Performance in last matches</h2>
+      <div clsss="radar">
+        <canvas id="radar-chart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="card bg-dark">
+    <div class="card-body">
+      <h2>Wins distribution</h2>
+      <div clsss="radar">
+        <canvas id="radar-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <div class="col-sm-6">
-    <canvas id="radar-chart" width="400" height="400"></canvas>
+    
 
 <script>
     new Chart(document.getElementById("radar-chart"), {

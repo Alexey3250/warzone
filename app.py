@@ -81,6 +81,9 @@ def index2():
 
             ##!! Error: TypeError: takes 0 positional arguments but 2 was given
             matches2(tag, platform)
+            
+            # Get data from matches table for this tag and platform, ordered by newest
+            matches = db_wz.execute("SELECT * FROM matches WHERE platform = :platform AND tag = :tag ORDER BY entry_id DESC LIMIT 25", platform=platform, tag=tag)
 
             # Add a tag and platform to the table of successful_searches if it doesn't exist
             if not db_wz.execute("SELECT * FROM successful_searches WHERE tag = ? AND platform = ?", tag, platform):
@@ -182,7 +185,7 @@ def index2():
                 kills_timeline=kills_timeline, deaths=zap(deaths), deaths_timeline=deaths_timeline,
                 timestamp_timeline=timestamp_timeline, teamPlacement_timeline=teamPlacement_timeline,
                 kd_timeline=kd_timeline, tag_check=tag_check, login_status=login_status,
-                can_add=can_add, top25=top25, top10=top10, top5=top5, top1=top1, top=top)
+                can_add=can_add, top25=top25, top10=top10, top5=top5, top1=top1, top=top, matches=matches)
 
 @app.route("/compared", methods=["GET", "POST"])
 def compared():

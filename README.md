@@ -26,7 +26,7 @@ MAD%25239849741, type: <class 'str'>; acti, type: <class 'str'>
 ```
 Before making a call the backend checks for user imput and if it is valid, it calls the API and gets the data. "#" symbol in the nickname is converted to "%2523".
 
-## API
+### API
 API used for data: https://rapidapi.com/elreco/api/call-of-duty-modern-warfare
 
 #### Advantages of this API:
@@ -41,7 +41,8 @@ API used for data: https://rapidapi.com/elreco/api/call-of-duty-modern-warfare
 + lacks data on the attachements for the guns
 + lacks data on teammates
 
-
+### Graphs
+Chart.js is used for the graphs.
 
 ## Features
 

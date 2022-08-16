@@ -16,14 +16,47 @@
     <div class="row">
         <div class="col-lg-8">
             <!-- Main graphs -->
-            <div class="card mb-4 bg-dark">
-                <div class="card-body">
-                    <h2>Performance in last matches</h2>
-                    <div class="mainChart">
-                        <canvas id="killsChart" width=800px height=350px></canvas>
+            <div class="row">
+                <div class="card mb-4 bg-dark">
+                    <div class="card-body">
+                        <h2>Performance in last matches</h2>
+                        <div class="mainChart">
+                            <canvas id="killsChart" width=800px height=350px></canvas>
+                        </div>
                     </div>
-
                 </div>
+            </div>
+            <div class="row">
+                <!-- Match history -->
+                <table class="table table-dark table-striped">
+                    <h3> Last 25 matches</h3>
+                    <tbody>
+                        <tr>
+                            <th scope="row">#</th>
+                            <th scope="row">Placement</th>
+                            <th scope="row">Mode</th>
+                            <th scope="row">Dealt damage</th>
+                            <th scope="row">Taken damage</th>
+                            <th scope="row">Kills</th>
+                            <th scope="row">Deaths</th>
+                            <th scope="row">K/D</th>
+                            <th scope="row">Time played</th>
+                        </tr>
+                        {% for match in matches %}
+                        <tr>
+                            <th scope="row">{{ match.id }}</th>
+                            <td>{{ match.teamPlacement }}</td>
+                            <td>{{ match.mode }}</td>
+                            <td>{{ match.damageDone }}</td>
+                            <td>{{ match.damageTaken }}</td>
+                            <td>{{ match.kills }}</td>
+                            <td>{{ match.deaths }}</td>
+                            <td>{{'%0.1f'| format(match.kdRatio|float) }}</td>
+                            <td>{{'%0f'| format(match.timePlayed / 60 | float) }}min</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="col-lg-4">
@@ -35,7 +68,7 @@
                 <div class="card-body">
                     <div class="row">
                         <h4>K/D</h4>
-                        <h6>{{ kd }}</h6>
+                        <h5>{{ kd }}</h5>
                     </div>
                     <div class="row">
                         <div class="col-6">
@@ -53,6 +86,39 @@
                             <p>{{ timePlayed }} h</p>
                         </div>
                     </div>
+                    <br>
+                    {% if login_status == True %}
+                        {% if can_add == True %}
+                        <!--Buttton to add a friend to squad-->
+                            <a href="">
+                                <button class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                                    Add to Squad
+                                </button>
+                            </a>
+                            {% if can_add == True %}
+                            <!--Botton to set as your profile-->
+                                <form method="post" action="/searched">
+                                    <button class="btn btn-primary" name="set_profile" value="set_profile">
+                                        Set as my profile
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                        {% else %}
+                            <a href="/register">
+                                <button class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                                    Register to set as your profile
+                                </button>
+                            </a>
+                    {% endif %}
+                    <p>&nbsp;</p>
+
+                    <h4>Wins distribution</h4>
+                    <div class="sideChart">
+                        <canvas id="winsChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,47 +128,6 @@
 
 
 
-<div class="container">
-    <h1>Search profile</h1>
-    <br>
-        <h2><p><span> {{ nick }} {{ platform }}</span></p></h1>
-
-        <p style="text-align:center"><span style="font-size:24px"><strong><span>K/D:</span><span style="background-color:#e74c3c">&nbsp; </span></strong><span style="color:#ffffff"><strong><span style="background-color:#e74c3c">{{ kd }}&nbsp;</span></strong></span><strong><span style="background-color:#e74c3c">&nbsp;</span></strong></span></p>
-
-        <table align="center" border="0">
-            <tbody>
-                <tr>
-                    <td style="text-align:right; width:157px"><span style="font-size:16px">WINS&nbsp;<strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; {{ wins }}&nbsp;&nbsp;</span></span></strong></span></td>
-                    <td style="text-align:right; width:210px"><span style="font-size:16px">KILLS <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; {{ kills }}&nbsp;&nbsp;</span></span></strong></span></td>
-                </tr>
-                <tr>
-                    <td style="text-align:right; width:157px"><span style="font-size:16px">WIN&nbsp;<strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; --%&nbsp;&nbsp;</span></span></strong></span></td>
-                    <td style="text-align:right; width:210px"><span style="font-size:16px">KILLS/GAME <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; --&nbsp;</span></span></strong></span></td>
-                </tr>
-                <tr>
-                    <td style="text-align:right; width:157px"><span style="font-size:16px">GULAG WIN <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; --%&nbsp;&nbsp;</span></span></strong></span></td>
-                    <td style="text-align:right; width:210px"><span style="font-size:16px">TIME PLAYED <strong><span style="color:#ffffff"><span style="background-color:#c0392b">&nbsp; {{ timePlayed }} h.&nbsp;&nbsp;</span></span></strong></span></td>
-                </tr>
-            </tbody>
-        </table>
-
-
-        <div class="row">
-            <div class="col-sm-6">
-                K/D chart
-                <canvas id="killsChart" width="400" height="400"></canvas>
-            </div>
-            <div class="col-sm-6">
-                Wins distribution
-                <div class="chartBox">
-                    <canvas id="winsChart"></canvas>
-                </div>
-                <canvas id="winsChart" width="400" height="400"></canvas>
-                {{ top }}
-                {{ top1 }}
-            </div>
-
-        </div>
         
         <!-- KIlls chart script-->
         <script>
@@ -206,96 +231,22 @@
         <script>
             var ctx = document.getElementById('winsChart').getContext('2d');
             var myChart = new Chart(ctx, {
-                type: 'bar',
+                type: 'doughnut',
                 data: {
-                    labels: ['Wins'],
+                    labels: ['top25', 'top10', 'top5', 'Wins'],
                     datasets: [{
-                        label: '# of Wins',
-                        data: [{{ top1 }}],
+                        label: 'Wins distribution',
+                        data: {{ top }},
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)'
-                        ]
-                    },
-                    {
-                        label: '# of Top 5',
-                        data: [{{ top5 }}],
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.2)'
-                        ]
-                    },
-                    {
-                        label: '# of Top 10',
-                        data: [{{ top10 }}],
-                        backgroundColor: [
-                            'rgba(255, 206, 86, 0.2)'
-                        ]
-                    },
-                    {
-                        label: '# of Top 25',
-                        data: [{{ top25 }}],
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.2)'
+                            'rgba(115, 207, 2, 0.1)',
+                            'rgba(115, 207, 2, 0.2)',
+                            'rgba(115, 207, 2, 0.6)',
+                            '#73cf02'
                         ]
                     }
-                ]},
-                options: {
-                    maintainAspectRatio: true,
-                    responsive: true,
-                    interaction: {
-                        intersect: false,
-                    },
-                    scales: {
-                        x: {
-                            display: false,
-                            stacked: true,
-                        },
-                        y: {
-                            display: false,
-                            stacked: true,
-                        }
-                    }
-                }
+                ]}
             });
         </script>
-
-        <br>
-        {% if login_status == True %}
-            {% if can_add == True %}
-            <!--Buttton to add a friend to squad-->
-                <a href="">
-                    <button class="btn btn-primary">
-                        <span class="glyphicon glyphicon-arrow-left"></span>
-                        Add to Squad
-                    </button>
-                </a>
-                {% if can_add == True %}
-                <!--Botton to set as your profile-->
-                    <form method="post" action="/searched">
-                        <button class="btn btn-primary" name="set_profile" value="set_profile">
-                            Set as my profile
-                        </button>
-                    </form>
-                {% endif %}
-            {% endif %}
-            {% else %}
-                <a href="/register">
-                    <button class="btn btn-primary">
-                        <span class="glyphicon glyphicon-arrow-left"></span>
-                        Register to set as your profile
-                    </button>
-                </a>
-        {% endif %}
-        <p>&nbsp;</p>
-</div>
-<div clss="container-sm">
-    <h2>Current </h2>
-</div>
-<div clss="container-sm">
-    <h2>BR stats</h2>
-</div>
-<div clss="container-sm">
-    <h2>Rebirth stats</h2>
-</div>
 
 
 {% endblock %}
