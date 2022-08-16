@@ -137,10 +137,19 @@
       </div>
     </div>
   </div>
-
+  <div class="card bg-dark">
+    <div class="card-body">
+      <h2>Main stats</h2>
+      <div clsss="radar">
+        <canvas id="radar-chart"></canvas>
+      </div>
+    </div>
+  </div>
   <div class="card bg-dark">
     <div class="card-body">
       <h2>Performance in last matches</h2>
+      {{ kd_timeline1 }}
+      {{ kd_timeline2 }}
       <div clsss="radar">
         <canvas id="radar-chart"></canvas>
       </div>

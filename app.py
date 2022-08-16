@@ -303,6 +303,26 @@ def compare():
             player2_br_radar = list(player2_br_radar)
 
             
+            ## DATA FOR THE KD GRAPHS
+            # Load kd over last matches from matches table
+            kd_timeline1 = db_wz.execute("SELECT kdRatio FROM matches WHERE tag = ? AND platform = ? ORDER BY entry_id DESC", tag1, platform1)
+            kd_timelime2 = db_wz.execute("SELECT kdRAtio FROM matches WHERE tag = ? AND platform = ? ORDER BY entry_id DESC", tag2, platform2)
+            # Conversion from nested list to a list of values
+            kd_timeline1 = [kd_timeline1[i]["kdRatio"] for i in range(len(kd_timeline1))]
+            kd_timeline2 = [kd_timelime2[i]["kdRatio"] for i in range(len(kd_timelime2))]
+
+            # Check which list is longer kd_timeline1 or kd_timeline2 and assgn a minimun length of the list to a value
+            if len(kd_timeline1) > len(kd_timeline2):
+                kd_timeline_min = len(kd_timeline2)
+                # if kd_timeline1 is longer, cut the rest of the values in kd_timeline1
+                kd_timeline1 = kd_timeline1[:kd_timeline_min]
+            else:
+                kd_timeline_min = len(kd_timeline1)
+                # if kd_timeline2 is longer, cut the rest of the values in kd_timeline2
+                kd_timeline2 = kd_timeline2[:kd_timeline_min]
+            
+            print(f"kd_timeline1: {kd_timeline1}, {type(kd_timeline1)}, len: {len(kd_timeline1)}")
+            print(f"kd_timeline2: {kd_timeline2}, {type(kd_timeline2)}, len: {len(kd_timeline2)}")
             
             print(player1_br_radar)
 
@@ -311,7 +331,7 @@ def compare():
                 
             
             
-            return render_template("compared.html", player1_data=player1_data, player2_data=player2_data, nick1=nick1, nick2=nick2, player1_br_radar=player1_br_radar, player2_br_radar=player2_br_radar)
+            return render_template("compared.html", player1_data=player1_data, player2_data=player2_data, nick1=nick1, nick2=nick2, player1_br_radar=player1_br_radar, player2_br_radar=player2_br_radar, kd_timeline1=kd_timeline1, kd_timeline2=kd_timeline2)
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
