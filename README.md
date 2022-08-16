@@ -7,6 +7,16 @@ Warzone data website that shows your gaming prfrormance in Call of Duty Warzone.
 
 Developed in Python using Flask framework. + SQL, HTML, CSS, JavaScript
 
+## Features
+
+- Show your gaming performance
+- Watch history of matches
+- Compare to other players
+- login/logout
+- save your profile
+
+## Backend
+
 When you fill the form with your username and platform, you will be redirected to the page with your data. Meanwhile on the background the backend calls API and gets your data. Data is received in json format and then parsed to flat structure and saved to the SQL database. After this page is calling the backend again and getting the data from the database.
 
 API receives 2 inputs: username and platform:
@@ -19,11 +29,11 @@ Before making a call the backend checks for user imput and if it is valid, it ca
 ## API
 API used for data: https://rapidapi.com/elreco/api/call-of-duty-modern-warfare
 
-Advantages of this API:
+#### Advantages of this API:
 + easy to use and authenticate
 + freemium
 
-Disadvantages of this API:
+#### Disadvantages of this API:
 + limited to 500 requests per day
 + often produces errors
 + gets limited data to 20 matches only (not all matches)
