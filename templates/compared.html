@@ -14,6 +14,65 @@
 
 <!-- Page content -->
 <div class="container">
+  <h2>Performance in last {{ timelineLength }} matches</h2>
+  <div class="card bg-dark">
+    <div class="card-body">
+        <div class="row">
+          <div class="col-sm">
+            <h4>Average K/D</h4>
+            <div class="row">
+              <div class="col-sm">
+                <div clsss="mainChart">
+                  <canvas id="kdChart"></canvas>
+                </div>
+              </div>
+                <div class="col-sm justify-content-left">
+                  <br>
+                  <h5>{{ nick1 }}</h5>
+                  {% if kd_running1[timelineLength-1] > kd_running2[timelineLength-1] %}
+                    <h6>{{ kd_running1[timelineLength-1]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h6>
+                  {% else %}
+                    <h6>{{ kd_running1[timelineLength-1]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h6>
+                  {% endif %}
+                  <h5>{{ nick2 }}</h5>
+                  {% if kd_running2[timelineLength-1] > kd_running2[timelineLength-1] %}
+                  <h6>{{ kd_running2[timelineLength-1]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h6>
+                  {% else %}
+                    <h6>{{ kd_running2[timelineLength-1]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h6>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-sm">
+            <h4>Average kills per game</h4>
+            <div class="row">
+              <div class="col-sm">
+                <div clsss="radar">
+                  <canvas id="killsChart"></canvas>
+                </div>
+              </div>
+              <div class="col-sm">
+                <br>
+                <h5>{{ nick1 }}</h5>
+                {% if kills_running1[timelineLength-1] > kills_running2[timelineLength-1] %}
+                  <h6>{{ kills_running1[timelineLength-1]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h6>
+                {% else %}
+                  <h6>{{ kills_running1[timelineLength-1]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h6>
+                {% endif %}
+                <h5>{{ nick2 }}</h5>
+                {% if kills_running2[timelineLength-1] > kills_running1[timelineLength-1] %}
+                  <h6>{{ kills_running2[timelineLength-1]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h6>
+                {% else %}
+                  <h6>{{ kills_running2[timelineLength-1]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h6>
+                {% endif %}
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Main container -->
   <div class="row justify-content-md-center">
       
@@ -160,32 +219,9 @@
       </div>
     </div>
   </div>
-  <div class="card bg-dark">
-    <div class="card-body">
-      <h2>Performance in last matches</h2>
-      {{ kd_timeline1 }}
-      {{ kd_timeline2 }}
-      <div clsss="radar">
-        <canvas id="radar-chart"></canvas>
-      </div>
-    </div>
-  </div>
-  <div class="card bg-dark">
-    <div class="card-body">
-      <h2>Wins distribution</h2>
-      <div clsss="radar">
-        <canvas id="kdChart"></canvas>
-      </div>
-      KD over last {{ timelineLength }} matches.
-    </div>
-    <div clsss="radar">
-      <canvas id="killsChart"></canvas>
-    </div>
-  </div>
 
 </div>
 
-<div class="col-sm-6">
     
 
 <script>
