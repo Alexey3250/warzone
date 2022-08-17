@@ -249,41 +249,15 @@ def compare():
             # Query for the last data entry in br table for each player and saving to list class variables
             player1_br = db_wz.execute("SELECT * FROM br WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
             player2_br = db_wz.execute("SELECT * FROM br WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
-            player1_br_all = db_wz.execute("SELECT * FROM br_all WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
-            player2_br_all = db_wz.execute("SELECT * FROM br_all WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
-            player1_br_dmz = db_wz.execute("SELECT * FROM br_dmz WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
-            player2_br_dmz = db_wz.execute("SELECT * FROM br_dmz WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
+            #player1_br_all = db_wz.execute("SELECT * FROM br_all WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
+            #player2_br_all = db_wz.execute("SELECT * FROM br_all WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
+            #player1_br_dmz = db_wz.execute("SELECT * FROM br_dmz WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag1, platform1)
+            #player2_br_dmz = db_wz.execute("SELECT * FROM br_dmz WHERE tag = ? AND platform = ? ORDER BY timestamp DESC LIMIT 1", tag2, platform2)
             print(f"player1_br: {player1_br}, {type(player1_br)}")
             print(f"player2_br: {player2_br}, {type(player2_br)}")
             
             # Converting lists to individual variables
-            player1_br_wins = player1_br[0]["wins"]
-            player1_br_kills = player1_br[0]["kills"]
-            player1_br_kdRatio = player1_br[0]["kdRatio"]
-            player1_br_deaths = player1_br[0]["deaths"]
-            player1_br_downs = player1_br[0]["downs"]
-            player1_br_topTwentyFive = player1_br[0]["topTwentyFive"]
-            player1_br_topTen = player1_br[0]["topTen"]
-            player1_br_topFive = player1_br[0]["topFive"]
-            player1_br_contracts = player1_br[0]["contracts"]
-            player1_br_revives = player1_br[0]["revives"]
-            player1_br_score = player1_br[0]["score"]
-            player1_br_scorePerMinute = player1_br[0]["scorePerMinute"]
-            player1_br_timePlayed = player1_br[0]["timePlayed"]
-            
-            player2_br_wins = player2_br[0]["wins"]
-            player2_br_kills = player2_br[0]["kills"]
-            player2_br_kdRatio = player2_br[0]["kdRatio"]
-            player2_br_deaths = player2_br[0]["deaths"]
-            player2_br_downs = player2_br[0]["downs"]
-            player2_br_topTwentyFive = player2_br[0]["topTwentyFive"]
-            player2_br_topTen = player2_br[0]["topTen"]
-            player2_br_topFive = player2_br[0]["topFive"]
-            player2_br_contracts = player2_br[0]["contracts"]
-            player2_br_revives = player2_br[0]["revives"]
-            player2_br_score = player2_br[0]["score"]
-            player2_br_scorePerMinute = player2_br[0]["scorePerMinute"]
-            player2_br_timePlayed = player2_br[0]["timePlayed"]
+            #player1_br_wins = player1_br[0]["wins"]
             
             ## Creating numbers for the radar chart - BR only
                 
@@ -304,34 +278,51 @@ def compare():
 
             
             ## DATA FOR THE KD GRAPHS
-            # Load kd over last matches from matches table
-            kd_timeline1 = db_wz.execute("SELECT kdRatio FROM matches WHERE tag = ? AND platform = ? ORDER BY entry_id DESC", tag1, platform1)
-            kd_timelime2 = db_wz.execute("SELECT kdRAtio FROM matches WHERE tag = ? AND platform = ? ORDER BY entry_id DESC", tag2, platform2)
+            # Load kd, kills over last matches from matches table
+            kd_kills_data1 = db_wz.execute("SELECT kdRatio, kills FROM matches WHERE tag = ? AND platform = ? ORDER BY entry_id DESC", tag1, platform1)
+            kd_kills_data2 = db_wz.execute("SELECT kdRAtio, kills FROM matches WHERE tag = ? AND platform = ? ORDER BY entry_id DESC", tag2, platform2)
             # Conversion from nested list to a list of values
-            kd_timeline1 = [kd_timeline1[i]["kdRatio"] for i in range(len(kd_timeline1))]
-            kd_timeline2 = [kd_timelime2[i]["kdRatio"] for i in range(len(kd_timelime2))]
+            kd_running1 = [kd_kills_data1[i]["kdRatio"] for i in range(len(kd_kills_data1))]
+            kd_running2 = [kd_kills_data2[i]["kdRatio"] for i in range(len(kd_kills_data2))]
 
-            # Check which list is longer kd_timeline1 or kd_timeline2 and assgn a minimun length of the list to a value
-            if len(kd_timeline1) > len(kd_timeline2):
-                kd_timeline_min = len(kd_timeline2)
-                # if kd_timeline1 is longer, cut the rest of the values in kd_timeline1
-                kd_timeline1 = kd_timeline1[:kd_timeline_min]
+            # Check which list is longer kd_running1 or kd_running2 and assgn a minimun length of the list to a value
+            if len(kd_running1) > len(kd_running2):
+                kd_running_min = len(kd_running2)
+                # if kd_running1 is longer, cut the rest of the values in kd_running1
+                kd_running1 = kd_running1[:kd_running_min]
             else:
-                kd_timeline_min = len(kd_timeline1)
-                # if kd_timeline2 is longer, cut the rest of the values in kd_timeline2
-                kd_timeline2 = kd_timeline2[:kd_timeline_min]
-            
-            print(f"kd_timeline1: {kd_timeline1}, {type(kd_timeline1)}, len: {len(kd_timeline1)}")
-            print(f"kd_timeline2: {kd_timeline2}, {type(kd_timeline2)}, len: {len(kd_timeline2)}")
-            
-            print(player1_br_radar)
+                kd_running_min = len(kd_running1)
+                # if kd_running2 is longer, cut the rest of the values in kd_running2
+                kd_running2 = kd_running2[:kd_running_min]
 
-                
+            # Calculate the running average
+            kd_running1 = [round(sum(kd_running1[:i+1])/len(kd_running1[:i+1]), 2) for i in range(len(kd_running1))]
+            kd_running2 = [round(sum(kd_running2[:i+1])/len(kd_running2[:i+1]), 2) for i in range(len(kd_running2))]
             
-                
+            timeline = list(range(1, len(kd_running1)+1))
+            timelineLength = len(kd_running1)
             
+            ## DATA FOR THE KILLS GRAPH
+            # Conversion from nested list to a list of values
+            kills_running1 = [kd_kills_data1[i]["kills"] for i in range(len(kd_kills_data1))]
+            kills_running2 = [kd_kills_data2[i]["kills"] for i in range(len(kd_kills_data2))]
             
-            return render_template("compared.html", player1_data=player1_data, player2_data=player2_data, nick1=nick1, nick2=nick2, player1_br_radar=player1_br_radar, player2_br_radar=player2_br_radar, kd_timeline1=kd_timeline1, kd_timeline2=kd_timeline2)
+            # Check which list is longer kills_running1 or kills_running2 and assgn a minimun length of the list to a value
+            if len(kills_running1) > len(kills_running2):
+                kills_running_min = len(kills_running2)
+                # if kills_running1 is longer, cut the rest of the values in kills_running1
+                kills_running1 = kills_running1[:kills_running_min]
+            else:
+                kills_running_min = len(kills_running1)
+                # if kills_running2 is longer, cut the rest of the values in kills_running2
+                kills_running2 = kills_running2[:kills_running_min]
+            
+            # Calculate the running average
+            kills_running1 = [round(sum(kills_running1[:i+1])/len(kills_running1[:i+1]), 2) for i in range(len(kills_running1))]
+            kills_running2 = [round(sum(kills_running2[:i+1])/len(kills_running2[:i+1]), 2) for i in range(len(kills_running2))]
+
+            
+            return render_template("compared.html",kills_running1=kills_running1, kills_running2=kills_running2, timelineLength=timelineLength, timeline=timeline, player1_data=player1_data, player2_data=player2_data, nick1=nick1, nick2=nick2, player1_br_radar=player1_br_radar, player2_br_radar=player2_br_radar, kd_running1=kd_running1, kd_running2=kd_running2, player1_br=player1_br, player2_br=player2_br)
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():

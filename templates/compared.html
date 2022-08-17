@@ -16,132 +16,147 @@
 <div class="container">
   <!-- Main container -->
   <div class="row justify-content-md-center">
-      <!-- Left container -->
-      <div class="col-sm">
-         
-        <div class="row">
-          <div class="card bg-dark">
-            <div class="card-body">
-                <h2>Performance in last matches</h2>
-                <div clsss="radar">
-                  <canvas id="radar-chart"></canvas>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Right container -->
-      <div class="col-sm">
-        <div class="card bg-dark">
-          <div class="card-body">
-            <div class="row">
-              <!-- header of the side card -->
-              <h2>Direct comparison</h2>
-            </div>
-            <div class="row">
-              <!-- nicknames -->
-              <div class="col">
-                <!-- Column 1 -->
-                <h4>{{ nick1 }}</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>{{ nick2 }}</h4>
-              </div>
-            <div class="row">
-              <!-- comparison -->
-              <h4>Time played</h4>
-              <div class="col">
-                <!-- column 1 -->
-                <h4>Time 1</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>Time 2</h4>
-              </div>
-            </div>
-            <div class="row">
-              <!-- comparison -->
-              <h4>Time played</h4>
-              <div class="col">
-                <!-- column 1 -->
-                <h4>Time 1</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>Time 2</h4>
-              </div>
-            </div>
-            <div class="row">
-              <!-- comparison -->
-              <h4>Time played</h4>
-              <div class="col">
-                <!-- column 1 -->
-                <h4>Time 1</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>Time 2</h4>
-              </div>
-            </div>
-            <div class="row">
-              <!-- comparison -->
-              <h4>Time played</h4>
-              <div class="col">
-                <!-- column 1 -->
-                <h4>Time 1</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>Time 2</h4>
-              </div>
-            </div>
-            <div class="row">
-              <!-- comparison -->
-              <h4>Time played</h4>
-              <div class="col">
-                <!-- column 1 -->
-                <h4>Time 1</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>Time 2</h4>
-              </div>
-            </div>
-            <div class="row">
-              <!-- comparison -->
-              <h4>Time played</h4>
-              <div class="col">
-                <!-- column 1 -->
-                <h4>Time 1</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>Time 2</h4>
-              </div>
-            </div>
-            <div class="row">
-              <!-- comparison -->
-              <h4>Time played</h4>
-              <div class="col">
-                <!-- column 1 -->
-                <h4>Time 1</h4>
-              </div>             
-              <div class="col">
-                <!-- column 2-->
-                <h4>Time 2</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      
   </div>
   <div class="card bg-dark">
     <div class="card-body">
       <h2>Main stats</h2>
-      <div clsss="radar">
-        <canvas id="radar-chart"></canvas>
+      <div class="row">
+        <!-- Left container -->
+        <div class="col-sm">             
+          <div class="row">
+            <div class="card bg-dark">
+              <div class="card-body">
+                  <h2>Performance in last matches</h2>
+                  <div clsss="compChart">
+                    <canvas id="radar-chart"></canvas>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Right container -->
+        <div class="col-sm">
+          <div class="card bg-dark">
+            <div class="card-body">
+              <div class="row">
+                <!-- header of the side card -->
+                <h2>Direct comparison</h2>
+              </div>
+              <div class="row">
+                <!-- nicknames -->
+                <div class="col">
+                  <!-- Column 1 -->
+                  <h4>{{ nick1 }}</h4>
+                </div>             
+                <div class="col">
+                  <!-- column 2-->
+                  <h4>{{ nick2 }}</h4>
+                </div>
+              <div class="row">
+                <!-- comparison -->
+                <h4>K/D</h4>
+                <div class="col">
+                  <!-- column 1 -->
+                  {% if player1_br[0]["kdRatio"] > player2_br[0]["kdRatio"] %}
+                    <h4>{{ player1_br[0]["kdRatio"]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player1_br[0]["kdRatio"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&uarr;</strong></span></span></h4>
+                  {% endif %}
+                </div>             
+                <div class="col">
+                  <!-- column 2-->
+                  {% if player2_br[0]["kdRatio"] > player1_br[0]["kdRatio"] %}
+                    <h4>{{ player2_br[0]["kdRatio"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player2_br[0]["kdRatio"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h4>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <!-- comparison -->
+                <h4>Time played</h4>
+                <div class="col">
+                  <!-- column 1 -->
+                  {% if player1_br[0]["timePlayed"] > player2_br[0]["timePlayed"] %}
+                    <h4>{{ (player1_br[0]["timePlayed"]/3600)|round|int }} hours<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                    {% else %}
+                    <h4>{{ (player1_br[0]["timePlayed"]/3600)|round|int }} hours<span style="font-size:18px"><span style="color:#ff0000"><strong>&uarr;</strong></span></span></h4>
+                  {% endif %}
+                </div>             
+                <div class="col">
+                  <!-- column 2-->
+                  {% if player2_br[0]["timePlayed"] > player1_br[0]["timePlayed"] %}
+                    <h4>{{ (player2_br[0]["timePlayed"]/3600)|round|int }} hours<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ (player2_br[0]["timePlayed"]/3600)|round|int }} hours<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h4>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <!-- comparison -->
+                <h4>Score per minute</h4>
+                <div class="col">
+                  <!-- column 1 -->
+                  {% if player1_br[0]["scorePerMinute"] > player2_br[0]["scorePerMinute"] %}
+                    <h4>{{ player1_br[0]["scorePerMinute"]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player1_br[0]["scorePerMinute"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&uarr;</strong></span></span></h4>
+                  {% endif %}
+                </div>             
+                <div class="col">
+                  <!-- column 2-->
+                  {% if player2_br[0]["scorePerMinute"] > player1_br[0]["scorePerMinute"] %}
+                    <h4>{{ player2_br[0]["scorePerMinute"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player2_br[0]["scorePerMinute"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h4>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <!-- comparison -->
+                <h4>Kills</h4>
+                <div class="col">
+                  <!-- column 1 -->
+                  {% if player1_br[0]["kills"] > player2_br[0]["kills"] %}
+                    <h4>{{ player1_br[0]["kills"]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player1_br[0]["kills"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&uarr;</strong></span></span></h4>
+                  {% endif %}
+                </div>             
+                <div class="col">
+                  <!-- column 2-->
+                  {% if player2_br[0]["kills"] > player1_br[0]["kills"] %}
+                    <h4>{{ player2_br[0]["kills"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player2_br[0]["kills"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h4>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row">
+                <!-- comparison -->
+                <h4>Deaths</h4>
+                <div class="col">
+                  <!-- column 1 -->
+                  {% if player1_br[0]["deaths"] > player2_br[0]["deaths"] %}
+                    <h4>{{ player1_br[0]["deaths"]|round(2, 'common')}}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player1_br[0]["deaths"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&uarr;</strong></span></span></h4>
+                  {% endif %}
+                </div>             
+                <div class="col">
+                  <!-- column 2-->
+                  {% if player2_br[0]["deaths"] > player1_br[0]["deaths"] %}
+                    <h4>{{ player2_br[0]["deaths"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#00ff00"><strong>&uarr;</strong></span></span></h4>
+                  {% else %}
+                    <h4>{{ player2_br[0]["deaths"]|round(2, 'common') }}<span style="font-size:18px"><span style="color:#ff0000"><strong>&darr;</strong></span></span></h4>
+                  {% endif %}
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -159,8 +174,12 @@
     <div class="card-body">
       <h2>Wins distribution</h2>
       <div clsss="radar">
-        <canvas id="radar-chart"></canvas>
+        <canvas id="kdChart"></canvas>
       </div>
+      KD over last {{ timelineLength }} matches.
+    </div>
+    <div clsss="radar">
+      <canvas id="killsChart"></canvas>
     </div>
   </div>
 
@@ -214,6 +233,198 @@
         }
     }
 });
+</script>
+
+<!-- KD chart script-->
+<script>
+  var ctx = document.getElementById('kdChart').getContext('2d');
+  var kdChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: {{ timeline | safe }},
+          datasets: [{
+              label: '{{ nick1 }}',
+              data: {{ kd_running1 }},
+              backgroundColor: '#73cf02',
+              borderColor: '#73cf02',
+              tension: 0.4,
+
+              pointRadius: 0.3,
+              hoverBackgroundColor: '#eaeaea',
+              hoverBorderWidth: 3,
+          },{
+              label: '{{ nick2 }}',
+              data: {{ kd_running2 }},
+              backgroundColor: '#c4c4c4',
+              borderColor: '#c4c4c4',
+              tension: 0.4,
+
+              pointRadius: 0,
+              hoverBackgroundColor: '#eaeaea',
+              hoverBorderWidth: 3,
+          }
+      ]
+      },
+
+      options: {
+          datalables: { display: true },
+          responsive: false,
+          scales: {
+              x: { 
+                  ticks: {
+                      display: false,
+                      autoSkip: true,
+                      maxTicksLimit: 10
+                  },
+                  grid: {
+                      display: true,
+                      color: '#464646',
+                      borderDash: [3, 3],
+                      borderDashOffset: 0,
+                      borderJoinStyle: 'miter',
+                      borderWidth: 1,
+                      drawBorder: true,
+                      drawTicks: true,
+                      drawOnChartArea: true,
+                      drawBorder: true,
+                      gridLines: {
+                          color: '#464646',
+                          borderDash: [3, 3],
+                          borderDashOffset: 0,
+                          borderJoinStyle: 'miter',
+                          borderWidth: 1,
+                          drawBorder: true,
+                          drawTicks: true,
+                          drawOnChartArea: true,
+                          drawBorder: true,
+                      },
+                  },
+                },
+              y: { 
+                  beginAtZero: true,
+                  grid: {
+                      display: true,
+                      color: '#464646',
+                      borderDash: [3, 3],
+                      borderDashOffset: 0,
+                      borderJoinStyle: 'miter',
+                      borderWidth: 1,
+                      drawBorder: true,
+                      drawTicks: true,
+                      drawOnChartArea: true,
+                      drawBorder: true,
+                      gridLines: {
+                          color: '#464646',
+                          borderDash: [3, 3],
+                          borderDashOffset: 0,
+                          borderJoinStyle: 'miter',
+                          borderWidth: 1,
+                          drawBorder: true,
+                          drawTicks: true,
+                          drawOnChartArea: true,
+                          drawBorder: true,
+                      },
+                  },
+              }
+          }
+      }
+  });
+</script>
+
+<!-- Kills chart script-->
+<script>
+  var ctx = document.getElementById('killsChart').getContext('2d');
+  var killsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: {{ timeline | safe }},
+          datasets: [{
+              label: '{{ nick1 }}',
+              data: {{ kills_running1 }},
+              backgroundColor: '#73cf02',
+              borderColor: '#73cf02',
+              tension: 0.4,
+
+              pointRadius: 0.3,
+              hoverBackgroundColor: '#eaeaea',
+              hoverBorderWidth: 3,
+          },{
+              label: '{{ nick2 }}',
+              data: {{ kills_running2 }},
+              backgroundColor: '#c4c4c4',
+              borderColor: '#c4c4c4',
+              tension: 0.4,
+
+              pointRadius: 0,
+              hoverBackgroundColor: '#eaeaea',
+              hoverBorderWidth: 3,
+          }
+      ]
+      },
+
+      options: {
+          datalables: { display: true },
+          responsive: false,
+          scales: {
+              x: { 
+                  ticks: {
+                      display: false,
+                      autoSkip: true,
+                      maxTicksLimit: 10
+                  },
+                  grid: {
+                      display: true,
+                      color: '#464646',
+                      borderDash: [3, 3],
+                      borderDashOffset: 0,
+                      borderJoinStyle: 'miter',
+                      borderWidth: 1,
+                      drawBorder: true,
+                      drawTicks: true,
+                      drawOnChartArea: true,
+                      drawBorder: true,
+                      gridLines: {
+                          color: '#464646',
+                          borderDash: [3, 3],
+                          borderDashOffset: 0,
+                          borderJoinStyle: 'miter',
+                          borderWidth: 1,
+                          drawBorder: true,
+                          drawTicks: true,
+                          drawOnChartArea: true,
+                          drawBorder: true,
+                      },
+                  },
+                },
+              y: { 
+                  beginAtZero: true,
+                  grid: {
+                      display: true,
+                      color: '#464646',
+                      borderDash: [3, 3],
+                      borderDashOffset: 0,
+                      borderJoinStyle: 'miter',
+                      borderWidth: 1,
+                      drawBorder: true,
+                      drawTicks: true,
+                      drawOnChartArea: true,
+                      drawBorder: true,
+                      gridLines: {
+                          color: '#464646',
+                          borderDash: [3, 3],
+                          borderDashOffset: 0,
+                          borderJoinStyle: 'miter',
+                          borderWidth: 1,
+                          drawBorder: true,
+                          drawTicks: true,
+                          drawOnChartArea: true,
+                          drawBorder: true,
+                      },
+                  },
+              }
+          }
+      }
+  });
 </script>
 
 {% endblock %}

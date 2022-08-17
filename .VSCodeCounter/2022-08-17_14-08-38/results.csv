@@ -1,0 +1,5 @@
+"filename", "language", "pip requirements", "Database", "comment", "blank", "total"
+"/home/mad/warzone-1/finance.db", "Database", 0, 20, 0, 1, 21
+"/home/mad/warzone-1/requirements.txt", "pip requirements", 14, 0, 0, 5, 19
+"/home/mad/warzone-1/warzone.db", "Database", 0, 1670, 0, 44, 1714
+"Total", "-", 14, 1690, 0, 50, 1754
