@@ -53,7 +53,7 @@ API used for data: https://rapidapi.com/elreco/api/call-of-duty-modern-warfare
 - Analyze your performance
 - Show history of matches
 - Compare 2 players
-- A meme error generator 
+- A meme error generator <br>
 <a href="https://ibb.co/BLk022Q"><img src="https://i.ibb.co/BLk022Q/Screenshot-2022-08-18-134526.png" alt="Screenshot-2022-08-18-134526" border="0"></a>
 
 ## Style
