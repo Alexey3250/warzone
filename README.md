@@ -42,7 +42,7 @@ API used for data: https://rapidapi.com/elreco/api/call-of-duty-modern-warfare
 + lacks data on teammates
 
 ### Graphs
-Chart.js is used for the graphs.
+<p>Chart.js is used for the graphs.</p>
 <a href="https://ibb.co/pKC09r7"><img src="https://i.ibb.co/pKC09r7/Screenshot-2022-08-18-133548.png" alt="Screenshot-2022-08-18-133548" border="0"></a> <a href="https://ibb.co/q1cmspp"><img src="https://i.ibb.co/q1cmspp/Screenshot-2022-08-18-133603.png" alt="Screenshot-2022-08-18-133603" border="0"></a> <a href="https://ibb.co/4sn5Y98"><img src="https://i.ibb.co/4sn5Y98/Screenshot-2022-08-18-133823.png" alt="Screenshot-2022-08-18-133823" border="0"></a> <a href="https://ibb.co/k3rMQQY"><img src="https://i.ibb.co/k3rMQQY/Screenshot-2022-08-18-133928.png" alt="Screenshot-2022-08-18-133928" border="0"></a>
 
 
@@ -54,7 +54,7 @@ Chart.js is used for the graphs.
 - Show history of matches
 - Compare 2 players
 - A meme error generator 
-  <a href="http://memegen.link/custom/400/404----Not-found.-Incorrect-username-or-platform~q-Misconfigured-privacy-settings~q.jpg?alt=https://stickerly.pstatic.net/sticker_pack/tldPp6gNqYovolcIcaYEg/NV385B/2/efd6d682-da26-4cf0-b5e5-9ad8b7b20bb7.png&width=400"><img src="http://memegen.link/custom/400/404----Not-found.-Incorrect-username-or-platform~q-Misconfigured-privacy-settings~q.jpg?alt=https://stickerly.pstatic.net/sticker_pack/tldPp6gNqYovolcIcaYEg/NV385B/2/efd6d682-da26-4cf0-b5e5-9ad8b7b20bb7.png&width=400" alt="Screenshot-2022-08-18-133006" border="0"></a>
+<a href="https://ibb.co/BLk022Q"><img src="https://i.ibb.co/BLk022Q/Screenshot-2022-08-18-134526.png" alt="Screenshot-2022-08-18-134526" border="0"></a>
 
 ## Style
 
@@ -68,7 +68,7 @@ Actions related to queries in the database that will not be used in the renderin
 ## Screenshots
 <a href="https://ibb.co/y4QcK7N"><img src="https://i.ibb.co/hYmJrwg/screencapture-127-0-0-1-5000-2022-08-18-13-31-41.png" alt="screencapture-127-0-0-1-5000-2022-08-18-13-31-41" border="0"></a>
 <a href="https://ibb.co/99K1qhf"><img src="https://i.ibb.co/LzjcCrq/screencapture-127-0-0-1-5000-2022-08-18-13-34-05.png" alt="screencapture-127-0-0-1-5000-2022-08-18-13-34-05" border="0"></a>
-<a href="https://ibb.co/MpBqsk0"><img src="https://i.ibb.co/k0mYx2C/screencapture-127-0-0-1-5000-compare-2022-08-18-13-35-28.png" alt="screencapture-127-0-0-1-5000-compare-2022-08-18-13-35-28" border="0"></a>
+<a href="https://ibb.co/MpBqsk0"><img src="https://i.ibb.co/92ZRNH5/screencapture-127-0-0-1-5000-compare-2022-08-18-13-35-28.png" alt="screencapture-127-0-0-1-5000-compare-2022-08-18-13-35-28" border="0"></a>
 
 ## Lessons Learned
 
