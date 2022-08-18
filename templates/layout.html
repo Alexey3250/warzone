@@ -52,16 +52,16 @@
                 <a class="navbar-brand" href="/"><span>Warzone Stats</span></a>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
+
                     <ul class="navbar-nav me-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/">Search</a></li>
+                        {% if session["user_id"] %}
+                            <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="/compare">Compare</a></li>
                     </ul>
                     {% if session["user_id"] %}
-                        <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/squad">My squad</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/matches">Matches</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/compare">Compare</a></li>
-                        </ul>
+
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                         </ul>

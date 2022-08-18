@@ -329,8 +329,149 @@ def dashboard():
     """ Dashboard shows your stats like in search.html """
     if request.method == "GET":
         print("/dashboard: GET")
-        # TODO: add a check if the user is logged in
-        return render_template("searched.html")
+        # Check if the user is logged in
+        print(session)
+        if "user_id" in session:
+
+
+            # get user_id from sesstion
+            user_id = session["user_id"]
+            # get tag and platform from users table
+            tag = db_wz.execute("SELECT tag FROM users WHERE id = ?", user_id)
+            platform = db_wz.execute("SELECT platform FROM users WHERE id = ?", user_id)
+            # convert to str values
+            tag = str(tag[0]["tag"])
+            platform = str(platform[0]["platform"])
+            # assign nick by changing %2325 in tag to # in a string
+            nick = tag.replace("%2523", "#")
+            # print user_id, tag and platform
+            print("/dashboard: user in session")
+            print(user_id, tag, platform)
+            
+
+            
+            # search and save to a database
+            message = search(tag, platform)
+
+            # Check if we received an error
+            if message != "ok":
+                return apology("%s" % message)
+
+            ##!! Error: TypeError: takes 0 positional arguments but 2 was given
+            matches2(tag, platform)
+            
+            # Get data from matches table for this tag and platform, ordered by newest
+            matches = db_wz.execute("SELECT * FROM matches WHERE platform = :platform AND tag = :tag ORDER BY entry_id DESC LIMIT 25", platform=platform, tag=tag)
+
+            # Add a tag and platform to the table of successful_searches if it doesn't exist
+            if not db_wz.execute("SELECT * FROM successful_searches WHERE tag = ? AND platform = ?", tag, platform):
+                db_wz.execute("INSERT INTO successful_searches (tag, platform) VALUES (?, ?)", tag, platform)
+
+            # Setting the values
+            warzone_values = 0
+            # Select values from the database
+            warzone_values = db_wz.execute("SELECT * FROM br_all WHERE tag= ? ORDER BY entry_id DESC LIMIT 1", tag)
+
+            # TODO: add a debug if we cant find an entry
+            if not warzone_values:
+                return apology("couldn't find")
+
+            wins = warzone_values[0]["wins"]
+            kills = warzone_values[0]["kills"]
+            deaths = warzone_values[0]["deaths"]
+            timePlayed = round(warzone_values[0]["timePlayed"] / 3600)
+            kd = round(warzone_values[0]["kdRatio"], 2)
+            top25 = warzone_values[0]["topTwentyFive"]
+            top10 = warzone_values[0]["topTen"]
+            top5 = warzone_values[0]["topFive"]
+            top1 = warzone_values[0]["wins"]
+            # Create a list of top25, top10, top5, top1
+            top = [top25, top10, top5, top1]
+
+            ## Creating a kills/deaths chart
+
+            # Query to a database to get the kills, deaths, timestamp, teamPlacement from matches tables
+            # Make each query in a separate thread
+
+            kills_timeline = db_wz.execute("SELECT kills FROM matches WHERE tag= ? ORDER BY entry_id", tag)
+            deaths_timeline = db_wz.execute("SELECT deaths FROM matches WHERE tag= ? ORDER BY entry_id", tag)
+            timestamp_timeline = db_wz.execute("SELECT timestamp FROM matches WHERE tag= ? ORDER BY entry_id", tag)
+            teamPlacement_timeline = db_wz.execute("SELECT teamPlacement FROM matches WHERE tag= ? ORDER BY entry_id", tag)
+
+            # Query for running average kdRatio
+            kd_timeline = db_wz.execute("SELECT kdRatio FROM matches WHERE tag= ? ORDER BY entry_id", tag)
+
+
+            # Convert to a list of numbers
+            kills_timeline = [int(i["kills"]) for i in kills_timeline]
+            deaths_timeline = [-int(i["deaths"]) for i in deaths_timeline]
+            teamPlacement_timeline = [int(i["teamPlacement"]) for i in teamPlacement_timeline]
+            kd_timeline = [round(i["kdRatio"], 2) for i in kd_timeline]
+
+            # Calculate the running average
+            kd_timeline = [sum(kd_timeline[:i+1])/len(kd_timeline[:i+1]) for i in range(len(kd_timeline))]
+
+            # Convert timestamp_timeline to a list of strings
+            timestamp_timeline = [i["timestamp"] for i in timestamp_timeline]
+
+            ## Logic for the buttons
+
+            # Check if we have this profile saved in users table
+            tag_check = tag_not_assigned(tag, platform)
+            print(f" {tag} is not assignet to a user: {tag_check}")
+            # Check if the user has his tag in the users table
+
+            if tag_check:
+                can_add = True
+            else:
+                can_add = False
+
+
+            # Check if we are logged in
+            if session.get("user_id"):
+                login_status = True
+                
+                # Parallel processing to request for assigned tag and platform in users table for current user
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    print("Starting threads")
+                    future_to_tag = {executor.submit(users_tag(session["user_id"]))}
+                    # clear the thread pool
+                    executor.shutdown(wait=True)
+                    print("Threads finished")
+            else:
+                login_status = False
+
+
+
+            # adding the tag and platform to session
+            session["tag"] = tag
+            session["platform"] = platform
+
+            # printing session data
+            print(f"session: {session}")
+
+            if request.form.get('set_profile') == 'set_profile':
+                print("set_profile")
+                # Add the tag and platform to the user in users table
+                db_wz.execute("UPDATE users SET tag = ?, platform = ? WHERE id = ?", tag, platform, session["user_id"])
+                print(f"{tag} has been added to the users table")
+
+
+
+            return render_template("searched.html", nick=nick, platform=platform,
+                kills=zap(kills), wins=zap(wins), timePlayed=zap(timePlayed), kd=kd,
+                kills_timeline=kills_timeline, deaths=zap(deaths), deaths_timeline=deaths_timeline,
+                timestamp_timeline=timestamp_timeline, teamPlacement_timeline=teamPlacement_timeline,
+                kd_timeline=kd_timeline, tag_check=tag_check, login_status=login_status,
+                can_add=can_add, top25=top25, top10=top10, top5=top5, top1=top1, top=top, matches=matches)
+            
+        else:
+            return apology("You must be logged in to access this page", 403)
+        
+        
+        
+        
+        
 
     else:
         print("/dashboard: POST")
